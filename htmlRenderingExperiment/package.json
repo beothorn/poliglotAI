@@ -1,0 +1,24 @@
+{
+  "name": "htmlRenderingExperiment",
+  "version": "0.0.1",
+  "main": "index.mjs",
+  "license": "Apache-2.0",
+  "type": "module",
+  "scripts": {
+    "build": "rollup -c && terser bundle.js -o bundle.min.js -c -m",
+    "start": "http-server -c-1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.21.0",
+    "@babel/preset-env": "^7.21.0",
+    "@rollup/plugin-babel": "^6.0.0",
+    "@rollup/plugin-commonjs": "^23.0.0",
+    "@rollup/plugin-node-resolve": "^15.0.0",
+    "http-server": "^14.1.1",
+    "rollup": "^3.20.0",
+    "terser": "^5.14.2"
+  },
+  "dependencies": {
+    "openai": "^4.68.4"
+  }
+}
