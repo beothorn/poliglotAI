@@ -15,37 +15,46 @@ document.addEventListener('DOMContentLoaded', () => {
 const context = {
   messages: [
     {
-      role: "system", content: "You are a Language Learning system. You render html and receives the input from the function r()."
-        + "The output is always surrounded by STARTHTML and STOPHTML. For example, let`s say you are teaching articles, you first render: "
-        + "STARTHTML <p>Bitte wählen Sie den richtigen Artikel für <strong>Freiheit</strong> aus:</p> "
-        + "<button onclick=\"r('der')\">Der</button>"
-        + "<button onclick=\"r('die')\">Die</button>"
-        + "<button onclick=\"r('das')\">Das</button> "
-        + "STOPHTML "
-        + "Or maybe an input:STARTHTML<p>Input the German Article for Freiheit:</p>"
-        + "<input type=\"text\" id=\"answerInput\" placeholder=\"Enter der, die, or das\">"
-        + "<button onclick=\"r(document.getElementById('answerInput').value)\">Answer</button> "
-        + "STOPHTML "
-        + "Use wathever is best for the question. After you will get the output from the function r, for example:"
-        + "der"
-        + "STARTHTML<p>Tut mir leid, die Antwort ist der</p>"
-        + "<p>Substantive mit den folgenden Suffixen haben den Artikel \"die\":</p>"
-        + "<table border=\"1\"> <tr> <th>Suffix</th> <th>Beispiele</th> </tr>"
-        + "<tr><td>-falt</td><td>Vielfalt</td></tr>"
-        + "<tr><td>-heit</td><td>Freiheit, Sicherheit</td></tr>"
-        + "<tr><td>-keit</td><td>Möglichkeit, Schnelligkeit</td></tr>"
-        + "<tr><td>-schaft</td><td>Freundschaft, Mannschaft</td></tr>"
-        + "<tr><td>-t (von Verben abgeleitete Substantive)</td><td>Fahrt, Tat</td></tr>"
-        + "<tr><td>-ung</td><td>Leitung, Zeitung</td></tr>"
-        + "</table>"
-        + "<p>Lasst uns weitermachen. Bitte wählen Sie den richtigen Artikel für <strong>Apfell</strong> aus:</p>"
-        + "<button onclick=\"r('der')\">Der</button>"
-        + "<button onclick=\"r('die')\">Die</button>"
-        + "<button onclick=\"r('das')\">Das</button> "
-        + "STOPHTML "
-        + "Some input that calls the function r(\"\") is always required. It can be either buttons, text input, radiobuttons or any that fits the question."
-        + "Be sure one of the answers is the right one."
-        + "Student level is A2. Please give lengthy explanations before asking for a response."
+      role: "system", content: `You are a Language Learning system. You render html and receives the input from the function r().
+      The output is always surrounded by STARTHTML and STOPHTML. For example, let\`s say you are teaching articles. You would render:
+      STARTHTML
+      <p>Klare Erläuterung der allgemeinen Artikelregeln.</p><p>Bitte wählen Sie den richtigen Artikel für <strong>Freiheit</strong> aus:</p>
+      <button onclick="r(event)">Der</button>
+      <button onclick="r(event)">Die</button>
+      <button onclick="r(event)">Das</button>
+      STOPHTML
+      This is only an example based on what the user asked to learn.
+      This is an example of what NOT to do: 
+      STARTHTML
+      <p>_ Hund streichelt der Mann.:</p>
+      <button onclick="r(event)">Um</button>
+      <button onclick="r(event)">Die</button>
+      <button onclick="r(event)">In der</button>
+      <button onclick="r(event)">Hund</button>
+      STOPHTML
+      This is bad because there is no explanation, no clear instructions and the right answer den is not one of the options.
+      The answer can be a sentence, a word that completes the sentence or another well known exercise format.
+      After you will get the output from the function r, for example:
+      STARTHTML
+      <p>Tut mir leid, die Antwort ist der</p>
+      <p>Substantive mit den folgenden Suffixen haben den Artikel "die":</p>
+      <table border="1">
+      <tr><th>Suffix</th><th>Beispiele</th></tr>
+      <tr><td>-falt</td><td>Vielfalt</td></tr>
+      <tr><td>-heit</td><td>Freiheit, Sicherheit</td></tr>
+      <tr><td>-keit</td><td>Möglichkeit, Schnelligkeit</td></tr>
+      <tr><td>-schaft</td><td>Freundschaft, Mannschaft</td></tr>
+      <tr><td>-t (von Verben abgeleitete Substantive)</td><td>Fahrt, Tat</td></tr>
+      <tr><td>-ung</td><td>Leitung, Zeitung</td></tr>
+      </table>
+      <p>Lasst uns weitermachen. Bitte wählen Sie den richtigen Artikel für <strong>Apfell</strong> aus:</p>
+      <button onclick="r(event)">Der</button>
+      <button onclick="r(event)">Die</button>
+      <button onclick="r(event)">Das</button>
+      STOPHTML
+      Some input that calls the function r("") is always required. It can be either buttons, text input, radiobuttons or any that fits the question.
+      Be sure one of the answers is the right one! The options can be anything in any quantity!
+      Student level is A2. Please give lengthy explanations before asking for a response.` 
     }
   ],
   openai: null
@@ -92,17 +101,19 @@ async function askAssistant(prompt) {
 }
 
 document.getElementById('generate').addEventListener('click', async () => {
-
-
+  
+  document.getElementById("result").classList.add("disabled");
   document.getElementById("generate").classList.add("disabled");
   const prompt = document.getElementById('prompt').value;
 
-  const apiKeyInput = document.getElementById('openAIKey');
-  const apiKey = apiKeyInput.value;
-
-  // Store the API key in localStorage
-  localStorage.setItem('openAIKey', apiKey);
-  context.openai = new OpenAI({ apiKey: apiKey, dangerouslyAllowBrowser: true });
+  if(!context.openai) {
+    const apiKeyInput = document.getElementById('openAIKey');
+    const apiKey = apiKeyInput.value;
+  
+    // Store the API key in localStorage
+    localStorage.setItem('openAIKey', apiKey);
+    context.openai = new OpenAI({ apiKey: apiKey, dangerouslyAllowBrowser: true });
+  }
 
   await askAssistant(prompt);
   document.getElementById("generate").classList.remove("disabled");
@@ -115,13 +126,16 @@ document.getElementById("prompt").addEventListener("keypress", function (event) 
   }
 });
 
-function r(response) {
+function r(event) {
+  const response = event.target.innerText;
   document.getElementById("result").classList.add("disabled");
+  document.getElementById("generate").classList.add("disabled");
   askAssistant(response);
 }
 
 function enableGenerate() {
   document.getElementById("result").classList.remove("disabled");
+  document.getElementById("generate").classList.remove("disabled");
 }
 
 window.r = r;
