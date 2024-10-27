@@ -1,15 +1,169 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>HTML Rendering Experiment</title>
+    <title>German Teacher</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #393939;
+        color: #333;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        min-height: 100vh;
+      }
+
+      #header {
+        width: 90%;
+        max-width: 1200px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px;
+        background-color: #ffffff;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        margin-top: 20px;
+      }
+
+      #header div {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+
+      #header input {
+        margin-left: 10px;
+        padding: 5px;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        flex: 1;
+      }
+
+      #header div:last-child {
+        margin-bottom: 0;
+      }
+
+      #generate {
+        background-color: #4CAF50;
+        color: white;
+        padding: 8px 16px;
+        font-size: 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: 10px;
+        transition: background-color 0.3s ease;
+        align-self: flex-start;
+      }
+
+      #generate:hover {
+        background-color: #45a049;
+      }
+
+      #result {
+        width: 90%;
+        max-width: 1200px;
+        background-color: #ffffff;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        padding: 10px;
+        margin-top: 20px;
+        overflow-wrap: break-word;
+      }
+
+      #footer {
+        width: 90%;
+        max-width: 1200px;
+        background-color: #ffffff;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        padding: 10px;
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+        bottom: 0;
+      }
+
+      #footer input {
+        margin-left: 10px;
+        padding: 5px;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        flex: 1;
+      }
+
+      button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 8px 16px;
+        font-size: 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin-left: 10px;
+      }
+
+      button:hover {
+        background-color: #45a049;
+      }
+
+      @media (min-width: 600px) {
+        #header {
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        #header div {
+          margin-bottom: 0;
+        }
+
+        #header input {
+          flex: initial;
+          width: 200px;
+        }
+
+        #footer {
+          flex-direction: row;
+          justify-content: space-between;
+        }
+
+        #footer input {
+          flex: initial;
+          width: 200px;
+        }
+      }
+
+      p, button, input {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      .disabled {
+        opacity: 0.5;
+        pointer-events: none;
+      }
+    </style>
   </head>
   <body>
-    <p>OpenAI key: <input id="openAIKey" type="text" /></p>
-    <p>Prompt: <input id="prompt" type="text" /></p>
-    <button id="generate">Generate</button>
+    <div id="header">
+      <div id="openAiKeyInput">OpenAI key: <input id="openAIKey" type="text" /></div>
+      <div>Prompt: <input id="prompt" type="text" /></div>
+      <button id="generate">Generate</button>
+    </div>
     <div id="result"></div>
-
+    <div id="footer">
+      <div>Free text: <input id="freeInput" type="text" /></div>
+      <button id="freeTextButton" onclick="r(document.getElementById('freeInput').value)">Send</button>
+    </div>
     <script src="bundle.min.js"></script>
   </body>
 </html>
-
