@@ -76,6 +76,17 @@
         overflow-wrap: break-word;
       }
 
+      .box {
+        width: 90%;
+        max-width: 1200px;
+        background-color: #ffffff;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        padding: 10px;
+        margin-top: 20px;
+        overflow-wrap: break-word;
+      }
+
       #footer {
         width: 90%;
         max-width: 1200px;
@@ -160,6 +171,9 @@
       <button id="generate">Generate</button>
     </div>
     <div id="result"></div>
+    <div class="box">
+      <p><a onclick="ask('I want some explanation on what I am suppose to be doing. Explain, Zeitform Perfekt, Hilfsverb (haben, sein) and Partizip II Form. Create a table with regular and irregular verbs, show which uses haben and which uses sein and why. Also explain trennbare und untrennbare and ge- .')">Partizip II</a></p>
+    </div>
     <script src="bundle.min.js"></script>
   </body>
 </html>
